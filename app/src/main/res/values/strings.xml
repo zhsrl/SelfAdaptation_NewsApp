@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SelfAdaptation</string>
+    <string name="add_news">Жаңалықтар қосу</string>
+    <string name="main">Жаңалықтар</string>
+    <string name="news_title">Жаңалық тақырыбы</string>
+    <string name="news_text">Жаңалық тексті</string>
+    <string name="add">Қосу</string>
+</resources>
