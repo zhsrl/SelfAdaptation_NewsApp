@@ -17,3 +17,4 @@ interface NewsDao {
     @Query("SELECT * FROM news")
     fun getAllNews(): List<News>
 }
+

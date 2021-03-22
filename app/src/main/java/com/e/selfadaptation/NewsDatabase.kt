@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import kotlinx.coroutines.internal.synchronized
 
-@Database(entities = [News::class], version = 1, exportSchema = true)
+@Database(entities = [News::class], version = 1, exportSchema = false)
+@TypeConverters(ImageHelper::class)
 abstract class NewsDatabase: RoomDatabase() {
 
     abstract fun newsDao(): NewsDao
@@ -35,5 +37,5 @@ object DatabaseProvider{
         }
     }
 
-
 }
+

@@ -50,13 +50,6 @@ class MainActivity : AppCompatActivity() {
     fun newsGen(): List<News>{
         val news: MutableList<News> = ArrayList()
 
-        val n1 = News(1, "Наурыз күні ескеретін алты міндет ", "A", "22-03-2021")
-        val n2 = News(2, "Шотландская компания призналась в участии в коррупционных схемах в Казахстане", "A", "21-03-2021")
-        val n3 = News(3, "Хайп прошел? Что происходит с Clubhouse", "A", "15-03-2021")
-
-        news.add(n1)
-        news.add(n2)
-        news.add(n3)
 
         return news
     }
