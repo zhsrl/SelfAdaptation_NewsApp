@@ -9,16 +9,16 @@ data class News(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var newsId: Int = 0,
-//
-//    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-//    var newsImage: String? = null,
+
+    @ColumnInfo(name = "image")
+    var newsImage: String? = null,
 
     @ColumnInfo(name = "title")
-    var newsTitle: String,
+    var newsTitle: String? = null,
 
     @ColumnInfo(name = "text")
-    var newsText: String,
+    var newsText: String? = null,
 
     @ColumnInfo(name = "date")
-    var newsDate: String
+    var newsDate: String? = null
 )
