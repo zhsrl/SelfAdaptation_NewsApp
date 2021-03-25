@@ -3,10 +3,13 @@ package com.e.selfadaptation
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class NewsAdapter(val newsList: List<News>): RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class NewsAdapter(val newsList: List<News>,
+                  var itemClick: ((View) -> Unit)? = null
+                  ): RecyclerView.Adapter<NewsAdapter.ViewHolder>(){
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         var title: TextView = view.findViewById(R.id.TV_model_news_title)
@@ -21,7 +24,9 @@ class NewsAdapter(val newsList: List<News>): RecyclerView.Adapter<NewsAdapter.Vi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.news_model, null, false)
-
+        itemClick.let {
+            view.setOnClickListener(it)
+        }
         return ViewHolder(view)
     }
 
@@ -30,4 +35,5 @@ class NewsAdapter(val newsList: List<News>): RecyclerView.Adapter<NewsAdapter.Vi
     }
 
     override fun getItemCount(): Int = newsList.size
+
 }

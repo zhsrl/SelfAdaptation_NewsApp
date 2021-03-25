@@ -17,7 +17,7 @@ object ImageHelper {
     @TypeConverter
     fun bitmapToString(bitmap: Bitmap): String? {
         val baos: ByteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val b: ByteArray = baos.toByteArray()
 
         val temp: String? = Base64.encodeToString(b, Base64.DEFAULT)

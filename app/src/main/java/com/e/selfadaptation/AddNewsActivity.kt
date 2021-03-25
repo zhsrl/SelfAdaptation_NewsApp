@@ -75,7 +75,7 @@ class AddNewsActivity : AppCompatActivity(), CoroutineScope {
                 val text: String = newsText.editableText.trim().toString()
 
                 val c: Date = Calendar.getInstance().time
-                val sdf = SimpleDateFormat("dd-MM-yy", Locale.getDefault())
+                val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
                 val date = sdf.format(c)
 
                 addNews(title = title, text = text, date = date, image = decToStringBitmap!!)
@@ -121,6 +121,7 @@ class AddNewsActivity : AppCompatActivity(), CoroutineScope {
     override fun onDestroy() {
         super.onDestroy()
         job.cancel()
+        finish()
     }
 
 
