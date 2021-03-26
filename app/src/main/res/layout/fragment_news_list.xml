@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragment.NewsListFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        app:titleTextColor="#FFF"
-        android:background="@color/main_color"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

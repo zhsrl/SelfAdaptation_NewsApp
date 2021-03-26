@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,24 +20,39 @@ import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(){
 
+    private lateinit var toolbar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(savedInstanceState == null){
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        setTitle("Janalyqtar")
+
+        if(findViewById<View>(R.id.layout_default) != null){
             supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_detail_container, NewsDetailFragment())
-                .commit()
+                    .beginTransaction()
+                    .hide(NewsDetailFragment())
+                    .show(NewsListFragment())
+                    .commit()
+
+
         }
-        
+
+        if(findViewById<View>(R.id.layout_land) != null){
+            supportFragmentManager
+                    .beginTransaction()
+                    .show(NewsListFragment())
+                    .show(NewsDetailFragment())
+                    .commit()
+
+        }
 
 
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, NewsListFragment())
-                .commit()
+
+
+
 
 
     }

@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toolbar
+import androidx.annotation.MainThread
+import androidx.annotation.WorkerThread
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.e.selfadaptation.*
@@ -27,10 +29,8 @@ class NewsListFragment : Fragment(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    private lateinit var recyclerView: RecyclerView
-    private var newsAdapter: NewsAdapter? = null
-
-    private lateinit var toolbar: MaterialToolbar
+    lateinit var recyclerView: RecyclerView
+    var newsAdapter: NewsAdapter? = null
 
     private lateinit var addNewsButton: FloatingActionButton
 
@@ -52,24 +52,45 @@ class NewsListFragment : Fragment(), CoroutineScope {
         super.onActivityCreated(savedInstanceState)
         job = Job()
 
-        toolbar = view!!.findViewById(R.id.toolbar)
-        toolbar.setTitle(R.string.main)
-
         newsDatabase = DatabaseProvider.getNewsDatabase(context!!.applicationContext)
         newsDao = newsDatabase.newsDao()
 
-        launch {
-            newsList = newsDao.getAllNews()
-            recyclerViewInit(newsList)
+        newsAdapter = NewsAdapter(newsList)
+        recyclerView.adapter = newsAdapter
+        newsAdapter!!.notifyDataSetChanged()
 
-            newsAdapter!!.itemClick = { view ->
-                val position = recyclerView.getChildAdapterPosition(view)
-                Toast.makeText(context!!.applicationContext, position.toString(), Toast.LENGTH_SHORT).show()
+        val layoutManager = LinearLayoutManager(context!!.applicationContext)
+        recyclerView.layoutManager = layoutManager
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
 
 
+        recyclerView = view!!.findViewById(R.id.recyclerView)
 
-            }
-        }
+        // Background Thread for get data from RoomDB
+//        launch {
+//
+//
+//            newsAdapter!!.itemClick = { view ->
+//                val position = recyclerView.getChildAdapterPosition(view)
+//
+//                Toast.makeText(context!!.applicationContext, position.toString(), Toast.LENGTH_SHORT).show()
+//
+//                if(view.findViewById<View>(R.id.layout_default) != null){
+//                    val news = newsList[position]
+//
+//                    val intent = Intent(context, NewsDetailActivity::class.java)
+//                    startActivity(intent)
+//                }
+//
+//                if(view.findViewById<View>(R.id.layout_land) != null){
+//                    activity!!.supportFragmentManager.beginTransaction()
+//                            .show(NewsDetailFragment())
+//                            .commit()
+//                }
+//            }
+//        }
+
+
 
         addNewsButton = view!!.findViewById(R.id.FAB_add_news)
         addNewsButton.setOnClickListener {
@@ -97,4 +118,11 @@ class NewsListFragment : Fragment(), CoroutineScope {
         job.cancel()
     }
 
+    suspend fun getData(): List<News> {
+        var list: List<News> = ArrayList()
+
+        list = newsDao.getAllNews()
+
+        return list
+    }
 }

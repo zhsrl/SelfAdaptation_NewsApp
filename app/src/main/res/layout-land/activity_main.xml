@@ -2,28 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:orientation="vertical"
+    android:id="@+id/layout_land"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <fragment
-        android:id="@+id/fragment_container"
-        android:name="com.e.selfadaptation.fragment.NewsListFragment"
-        android:layout_width="370dp"
-        android:layout_height="match_parent"/>
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        app:titleTextColor="#FFF"
+        android:background="@color/main_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <fragment
-            android:id="@+id/fragment_detail_container"
-            android:name="com.e.selfadaptation.fragment.NewsDetailFragment"
-            android:layout_width="match_parent"
+            android:id="@+id/fragment_container"
+            android:name="com.e.selfadaptation.fragment.NewsListFragment"
+            android:layout_width="370dp"
             android:layout_height="match_parent"/>
 
-    </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/fragment_detail_container"
+                android:name="com.e.selfadaptation.fragment.NewsDetailFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </FrameLayout>
+
+
+
+    </LinearLayout>
+
 
 
 
