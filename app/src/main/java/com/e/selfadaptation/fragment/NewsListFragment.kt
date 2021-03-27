@@ -1,6 +1,8 @@
 package com.e.selfadaptation.fragment
 
+import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -55,40 +57,53 @@ class NewsListFragment : Fragment(), CoroutineScope {
         newsDatabase = DatabaseProvider.getNewsDatabase(context!!.applicationContext)
         newsDao = newsDatabase.newsDao()
 
-        newsAdapter = NewsAdapter(newsList)
-        recyclerView.adapter = newsAdapter
-        newsAdapter!!.notifyDataSetChanged()
-
-        val layoutManager = LinearLayoutManager(context!!.applicationContext)
-        recyclerView.layoutManager = layoutManager
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-
-
-        recyclerView = view!!.findViewById(R.id.recyclerView)
-
         // Background Thread for get data from RoomDB
-//        launch {
-//
-//
-//            newsAdapter!!.itemClick = { view ->
-//                val position = recyclerView.getChildAdapterPosition(view)
-//
-//                Toast.makeText(context!!.applicationContext, position.toString(), Toast.LENGTH_SHORT).show()
-//
-//                if(view.findViewById<View>(R.id.layout_default) != null){
-//                    val news = newsList[position]
-//
-//                    val intent = Intent(context, NewsDetailActivity::class.java)
-//                    startActivity(intent)
-//                }
-//
-//                if(view.findViewById<View>(R.id.layout_land) != null){
-//                    activity!!.supportFragmentManager.beginTransaction()
-//                            .show(NewsDetailFragment())
-//                            .commit()
-//                }
-//            }
-//        }
+        launch{
+            newsList = newsDao.getAllNews()
+            recyclerViewInit(newsList)
+
+            newsAdapter!!.itemClick = { view ->
+
+                val position = recyclerView.getChildAdapterPosition(view)
+                val news = newsList[position]
+
+                if (activity!!
+                                .resources
+                                .configuration
+                                .orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    val intent = Intent(context!!.applicationContext, NewsDetailActivity::class.java)
+
+
+
+                    intent.putExtra(NewsDetailActivity.TITLE, news.newsTitle)
+                    intent.putExtra(NewsDetailActivity.IMAGE, news.newsImage)
+                    intent.putExtra(NewsDetailActivity.DESCRIPTION, news.newsText)
+                    intent.putExtra(NewsDetailActivity.DATE, news.newsDate)
+                    startActivity(intent)
+                }
+
+                if (activity!!
+                                .resources
+                                .configuration
+                                .orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    Toast.makeText(context, "L", Toast.LENGTH_SHORT).show()
+
+                    val bundle = Bundle()
+
+                    bundle.putString(NewsDetailFragment.IMAGE, news.newsImage)
+                    bundle.putString(NewsDetailFragment.TITLE, news.newsTitle)
+                    bundle.putString(NewsDetailFragment.DATE, news.newsDate)
+                    bundle.putString(NewsDetailFragment.DESCRIPTION, news.newsText)
+
+                    val fragmentObj = NewsDetailFragment()
+
+                    fragmentObj.arguments = bundle
+
+                }
+
+            }
+
+        }
 
 
 
@@ -118,11 +133,4 @@ class NewsListFragment : Fragment(), CoroutineScope {
         job.cancel()
     }
 
-    suspend fun getData(): List<News> {
-        var list: List<News> = ArrayList()
-
-        list = newsDao.getAllNews()
-
-        return list
-    }
 }
